@@ -1,18 +1,42 @@
-<h1> Incident Report - Analyzing Network Attack (SYN Flood) </h1>
+<h1>Incident Response: Mitigating a SYN Flood Attack on a Travel Agency Website</h1>
 
-<h2>Web Server Denial of Service Mitigation</h2>
+<h2>Incident Overview</h2>
 
-I detected a web server outage via an automated alert. Initial troubleshooting revealed a connection timeout. I performed packet capture and analysis, identifying a high volume of TCP SYN requests originating from an unknown IP address. This indicated a likely SYN flood attack, overwhelming the server and preventing legitimate access.
+The travel agency's website, a critical platform for advertising sales and promotions, experienced a service outage, impacting employees' ability to assist customers. Initial investigation revealed that the outage was caused by a SYN flood attack, a type of denial-of-service (DoS) attack. This attack overwhelmed the web server, preventing legitimate employee access and hindering business operations.
 
-My response included:
+<h2>Initial Response and Analysis</h2>
 
-Temporarily taking the server offline to facilitate recovery.
+I detected the web server outage via an automated alert. My initial response involved:
 
-Configuring the firewall to block the attacking IP address.
+Verifying the outage and its impact on employee access.
 
-I recognized the limitations of IP blocking against spoofed addresses and immediately escalated the issue to my manager, providing a detailed explanation of the attack and recommending further preventative measures.
+Performing packet capture and analysis using Wireshark to identify the root cause.
 
-<h2>Wireshark Capture</h2>
+The Wireshark analysis, as shown below, revealed a high volume of TCP SYN requests originating from an unknown IP address, indicating a SYN flood attack. The server was unable to process these requests, leading to connection timeouts for legitimate users.
+
+<h2>Containment and Mitigation</h2>
+
+To contain the attack and mitigate its immediate impact, I took the following actions:
+
+Temporarily took the affected web server offline to allow it to recover.
+
+Configured the firewall to block the attacking IP address.
+
+I recognized that IP blocking alone was not a long-term solution due to the possibility of IP address spoofing.
+
+<h2>Escalation and Recommendations</h2>
+
+I immediately escalated the issue to my manager, providing a detailed explanation of the attack, its impact, and the limitations of the initial mitigation strategy. I recommended implementing the following preventative measures:
+
+SYN Flood Protection: Implement SYN cookies or rate limiting on the firewall and web server to prevent future SYN flood attacks.
+
+Intrusion Detection System (IDS): Deploy an IDS to detect and alert on suspicious network traffic patterns, including those indicative of DoS attacks.
+
+I also emphasized the importance of a proactive security posture and the need for ongoing monitoring and maintenance of security systems.
+
+<h2>Wireshark Log Analysis</h2>
+
+The Wireshark capture provided valuable insights into the attack:
 
 <img src="https://i.imgur.com/OQGyjwJ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <img src="https://i.imgur.com/914fNyW.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
@@ -20,20 +44,23 @@ I recognized the limitations of IP blocking against spoofed addresses and immedi
 
 <h2>Initial Observations:</h2>
 
-The log excerpt begins at packet number 47, corresponding to 3.144 seconds into the capture. This shows the initial stages of normal website traffic. The source IP address 198.51.100.23 is identified as belonging to an employee's computer, while 192.0.2.1 is the web server. 
+The image shows a high volume of SYN packets, which is characteristic of a SYN flood attack.
 
-Normal web browsing involves a TCP three-way handshake followed by HTTP requests. Packets 47-49 illustrate this handshake: the employee's computer initiates the connection with a SYN packet (47), the server responds with SYN, ACK (48), and the employee completes the handshake with ACK (49). Packet 50 shows a normal HTTP GET request for /sales.html from the employee, and packet 51 shows the server's HTTP/1.1 200 OK response. 
+Normal Traffic: The log initially shows normal web traffic, with employees (e.g., IP address 198.51.100.23) accessing the web server (192.0.2.1). This includes the standard TCP three-way handshake (SYN, SYN-ACK, ACK) and HTTP GET requests for web pages.
 
-<h2>Identifying the Attack:</h2>
-Starting around packet 52, I observe a different source IP address: 203.0.113.0. This address sends a SYN packet (52) to the web server. The server responds with a SYN, ACK (53), as it would in a normal connection. Crucially, the attacking IP (203.0.113.0) sends an ACK (54), appearing to complete the handshake. However, the attacking IP continues to send more SYN packets (e.g., packet 57, 59, 61), even though it has seemingly completed a handshake. This is suspicious. 
+Attack Traffic: The attack is characterized by a high volume of SYN packets originating from a single, unknown IP address (203.0.113.0). These SYN packets flood the server, preventing it from responding to legitimate connection requests.
 
-<h2>Progression and Impact:</h2>
-The log shows a mix of normal employee traffic (highlighted in green) and the attacker's repeated SYN packets (highlighted in red). As the attack progresses, the number of SYN packets from 203.0.113.0 increases significantly. I see evidence of the server becoming overloaded. Packets 73, 77, and 80 show errors: HTTP/1.1 504 Gateway Time-out: The web server is taking too long to respond to legitimate employee requests. [RST, ACK]: The server is resetting connections with employees, likely because it cannot allocate resources.  From around packet 125 onward, the log is dominated by the attacker's SYN packets. The server is overwhelmed and effectively stops responding to legitimate employee traffic. The web server is unable to open a new connection to new visitors who receive a connection timeout message. The repeated SYN packets from a single source (203.0.113.0) indicate a direct Denial of Service (DoS) attack, specifically a SYN flood.
+Impact: As the attack progresses, the server becomes overwhelmed, resulting in:
+
+HTTP/1.1 504 Gateway Time-out errors for legitimate users, indicating the server is unresponsive.
+
+[RST, ACK] packets being sent to legitimate users, indicating connection resets.
+
+Conclusion: The Wireshark log clearly demonstrates a SYN flood attack, where the attacker exploits the TCP handshake process to exhaust server resources and cause a denial of service.
  
 <h2>Conclusion</h2>
 
-The log demonstrates a SYN flood attack. The attacker is sending a large number of SYN packets to the web server, exhausting its connection resources and preventing it from responding to legitimate employee requests. The server is eventually overwhelmed, leading to timeouts and connection resets for legitimate users.
-
+This incident highlights the significant impact a SYN flood attack can have on a web server's availability and the importance of implementing robust mitigation and prevention strategies. I am prepared to implement and manage solutions such as SYN cookies and rate limiting to enhance the organization's security posture, ensure business continuity, and minimize the risk of future attacks.
 </p>
 
 <!--
