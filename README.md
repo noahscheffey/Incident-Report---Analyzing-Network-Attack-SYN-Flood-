@@ -38,7 +38,7 @@ I also emphasized the importance of a proactive security posture and the need fo
 
 The Wireshark capture provided valuable insights into the attack:
 
-<img src="https://i.imgur.com/OQGyjwJ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/glhZcwQ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <img src="https://i.imgur.com/914fNyW.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <img src="https://i.imgur.com/OrA4B9h.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 
