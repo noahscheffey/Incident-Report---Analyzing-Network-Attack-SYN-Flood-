@@ -8,31 +8,31 @@ The travel agency's website, a critical platform for advertising sales and promo
 
 I detected the web server outage via an automated alert. My initial response involved:
 
-Verifying the outage and its impact on employee access.
+1. Verifying the outage and its impact on employee access.
 
-Performing packet capture and analysis using Wireshark to identify the root cause.
+2. Performing packet capture and analysis using Wireshark to identify the root cause.
 
-The Wireshark analysis, as shown below, revealed a high volume of TCP SYN requests originating from an unknown IP address, indicating a SYN flood attack. The server was unable to process these requests, leading to connection timeouts for legitimate users.
+3. The Wireshark analysis, as shown below, revealed a high volume of TCP SYN requests originating from an unknown IP address, indicating a SYN flood attack. The server was unable to process these requests, leading to connection timeouts for legitimate users.
 
 <h2>Containment and Mitigation</h2>
 
 To contain the attack and mitigate its immediate impact, I took the following actions:
 
-Temporarily took the affected web server offline to allow it to recover.
+1. Temporarily took the affected web server offline to allow it to recover.
 
-Configured the firewall to block the attacking IP address.
+2. Configured the firewall to block the attacking IP address.
 
-I recognized that IP blocking alone was not a long-term solution due to the possibility of IP address spoofing.
+3. I recognized that IP blocking alone was not a long-term solution due to the possibility of IP address spoofing.
 
 <h2>Escalation and Recommendations</h2>
 
 I immediately escalated the issue to my manager, providing a detailed explanation of the attack, its impact, and the limitations of the initial mitigation strategy. I recommended implementing the following preventative measures:
 
-SYN Flood Protection: Implement SYN cookies or rate limiting on the firewall and web server to prevent future SYN flood attacks.
+1. SYN Flood Protection: Implement SYN cookies or rate limiting on the firewall and web server to prevent future SYN flood attacks.
 
-Intrusion Detection System (IDS): Deploy an IDS to detect and alert on suspicious network traffic patterns, including those indicative of DoS attacks.
+2. Intrusion Detection System (IDS): Deploy an IDS to detect and alert on suspicious network traffic patterns, including those indicative of DoS attacks.
 
-I also emphasized the importance of a proactive security posture and the need for ongoing monitoring and maintenance of security systems.
+3. I also emphasized the importance of a proactive security posture and the need for ongoing monitoring and maintenance of security systems.
 
 <h2>Wireshark Log Analysis</h2>
 
@@ -46,17 +46,17 @@ The Wireshark capture provided valuable insights into the attack:
 
 The image shows a high volume of SYN packets, which is characteristic of a SYN flood attack.
 
-Normal Traffic: The log initially shows normal web traffic, with employees (e.g., IP address 198.51.100.23) accessing the web server (192.0.2.1). This includes the standard TCP three-way handshake (SYN, SYN-ACK, ACK) and HTTP GET requests for web pages.
+**Normal Traffic:** The log initially shows normal web traffic, with employees (e.g., IP address 198.51.100.23) accessing the web server (192.0.2.1). This includes the standard TCP three-way handshake (SYN, SYN-ACK, ACK) and HTTP GET requests for web pages.
 
-Attack Traffic: The attack is characterized by a high volume of SYN packets originating from a single, unknown IP address (203.0.113.0). These SYN packets flood the server, preventing it from responding to legitimate connection requests.
+**Attack Traffic:** The attack is characterized by a high volume of SYN packets originating from a single, unknown IP address (203.0.113.0). These SYN packets flood the server, preventing it from responding to legitimate connection requests.
 
-Impact: As the attack progresses, the server becomes overwhelmed, resulting in:
+**Impact:** As the attack progresses, the server becomes overwhelmed, resulting in:
 
-HTTP/1.1 504 Gateway Time-out errors for legitimate users, indicating the server is unresponsive.
+1. HTTP/1.1 504 Gateway Time-out errors for legitimate users, indicating the server is unresponsive.
 
-[RST, ACK] packets being sent to legitimate users, indicating connection resets.
+2. [RST, ACK] packets being sent to legitimate users, indicating connection resets.
 
-Conclusion: The Wireshark log clearly demonstrates a SYN flood attack, where the attacker exploits the TCP handshake process to exhaust server resources and cause a denial of service.
+**Conclusion:** The Wireshark log clearly demonstrates a SYN flood attack, where the attacker exploits the TCP handshake process to exhaust server resources and cause a denial of service.
  
 <h2>Conclusion</h2>
 
