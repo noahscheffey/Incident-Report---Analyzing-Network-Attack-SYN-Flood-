@@ -1,8 +1,8 @@
-<h1>Incident Response: Mitigating a SYN Flood Attack on a Travel Agency Website</h1>
+<h1>Incident Response: Mitigating a SYN Flood Attack on a Client Website</h1>
 
 <h2>Incident Overview</h2>
 
-The travel agency's website, a critical platform for advertising sales and promotions, experienced a service outage, impacting employees' ability to assist customers. Initial investigation revealed that the outage was caused by a SYN flood attack, a type of denial-of-service (DoS) attack. This attack overwhelmed the web server, preventing legitimate employee access and hindering business operations.
+The client's website, a critical platform for advertising sales and promotions, experienced a service outage, impacting employees' ability to assist customers. Initial investigation revealed that the outage was caused by a SYN flood attack, a type of denial-of-service (DoS) attack. This attack overwhelmed the web server, preventing legitimate employee access and hindering business operations.
 
 <h2>Initial Response and Analysis</h2>
 
